@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ARAM CONSTITUTION | Patch 14.69</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --lol-gold: #C8AA6E;
+            --lol-gold-light: #F0E6D2;
+            --lol-blue-dark: #010A13;
+            --lol-blue-bg: #0A1428;
+            --lol-blue-border: #1E2328;
+            --red-accent: #FF4655;
+            --mana-blue: #4CC9F0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--lol-blue-dark);
+            color: var(--lol-gold-light);
+            font-family: 'Roboto', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center; /* Centered vertically */
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden; /* Prevent scroll from particles */
+        }
+
+        /* --- The Background Effect Container --- */
+        #bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* Main Container */
+        .client-window {
+            width: 100%;
+            max-width: 900px;
+            background: linear-gradient(180deg, rgba(10, 20, 40, 0.85) 0%, rgba(1, 10, 19, 0.95) 100%);
+            border: 2px solid var(--lol-blue-border);
+            border-top: 4px solid var(--lol-gold);
+            box-shadow: 0 0 50px rgba(0, 0, 0, 0.8), 0 0 100px rgba(74, 64, 21, 0.2);
+            position: relative;
+            backdrop-filter: blur(5px); /* Glass effect */
+            z-index: 1;
+        }
+
+        /* The Top Bar */
+        .header {
+            background: linear-gradient(90deg, #1E2328 0%, #785A28 50%, #1E2328 100%);
+            padding: 15px;
+            text-align: center;
+            border-bottom: 1px solid var(--lol-gold);
+            position: relative;
+        }
+
+        .header h1 {
+            font-family: 'Cinzel', serif;
+            font-weight: 900;
+            font-size: 2.5rem;
+            color: var(--lol-gold-light);
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            text-shadow: 0 0 10px rgba(200, 170, 110, 0.5);
+        }
+
+        .header .patch-note {
+            font-size: 0.8rem;
+            color: var(--lol-blue-border);
+            background: var(--lol-gold-light);
+            padding: 2px 8px;
+            border-radius: 2px;
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-weight: bold;
+        }
+
+        .sub-header {
+            background-color: rgba(30, 35, 40, 0.6);
+            padding: 10px;
+            text-align: center;
+            font-style: italic;
+            color: #9BA8AB;
+            border-bottom: 1px solid #333;
+        }
+
+        /* Content Area */
+        .content {
+            padding: 30px;
+        }
+
+        /* Rule Cards - Updated without keys */
+        .rule-card {
+            background: linear-gradient(90deg, rgba(70, 70, 80, 0.1) 0%, transparent 100%);
+            border-left: 4px solid var(--lol-gold); /* New visual anchor */
+            margin-bottom: 20px;
+            padding: 20px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .rule-card:hover {
+            background: linear-gradient(90deg, rgba(200, 170, 110, 0.1) 0%, transparent 100%);
+            border-left-color: var(--lol-gold-light);
+            transform: translateX(5px);
+        }
+
+        .rule-title {
+            font-family: 'Cinzel', serif;
+            font-size: 1.3rem;
+            color: var(--lol-gold);
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+        }
+        
+        /* Decorative diamond next to title */
+        .rule-title::before {
+            content: '';
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background-color: var(--lol-gold);
+            transform: rotate(45deg);
+            margin-right: 12px;
+        }
+
+        .rule-body {
+            color: #A09B8C;
+            line-height: 1.6;
+            padding-left: 20px;
+            font-size: 0.95rem;
+        }
+
+        .highlight {
+            color: var(--mana-blue);
+            font-weight: bold;
+        }
+
+        .banned {
+            color: var(--red-accent);
+            text-decoration: line-through;
+            font-weight: bold;
+        }
+
+        /* Warning Section */
+        .warning-box {
+            background: rgba(255, 70, 85, 0.1);
+            border: 1px solid var(--red-accent);
+            padding: 15px;
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .warning-box h3 {
+            color: var(--red-accent);
+            font-family: 'Cinzel', serif;
+            margin-bottom: 5px;
+        }
+
+        /* The Ready Button */
+        .footer-action {
+            text-align: center;
+            margin-top: 40px;
+            margin-bottom: 20px;
+        }
+
+        .lol-btn {
+            background: linear-gradient(180deg, #1E2328 0%, #433D2B 100%);
+            border: 2px solid var(--lol-gold);
+            color: var(--lol-gold-light);
+            padding: 15px 50px;
+            font-family: 'Cinzel', serif;
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-shadow: 0 0 5px rgba(0,0,0,0.5);
+            clip-path: polygon(10% 0, 100% 0, 100% 70%, 90% 100%, 0 100%, 0 30%);
+        }
+
+        .lol-btn:hover {
+            background: linear-gradient(180deg, #433D2B 0%, #785A28 100%);
+            text-shadow: 0 0 10px var(--lol-gold);
+            box-shadow: 0 0 20px rgba(200, 170, 110, 0.4);
+        }
+
+        .lol-btn:active {
+            transform: scale(0.98);
+            background: #010A13;
+        }
+
+        /* Glitch effect */
+        .glitch {
+            position: relative;
+            display: inline-block;
+        }
+        .glitch::before, .glitch::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        .glitch::before {
+            left: 2px;
+            text-shadow: -1px 0 #ff00c1;
+            clip: rect(44px, 450px, 56px, 0);
+            animation: glitch-anim 5s infinite linear alternate-reverse;
+        }
+        .glitch::after {
+            left: -2px;
+            text-shadow: -1px 0 #00fff9;
+            clip: rect(44px, 450px, 56px, 0);
+            animation: glitch-anim2 5s infinite linear alternate-reverse;
+        }
+
+        @keyframes glitch-anim {
+            0% { clip: rect(31px, 9999px, 94px, 0); }
+            20% { clip: rect(85px, 9999px, 77px, 0); }
+            40% { clip: rect(64px, 9999px, 98px, 0); }
+            60% { clip: rect(99px, 9999px, 114px, 0); }
+            80% { clip: rect(98px, 9999px, 129px, 0); }
+            100% { clip: rect(82px, 9999px, 69px, 0); }
+        }
+        @keyframes glitch-anim2 {
+            0% { clip: rect(65px, 9999px, 119px, 0); }
+            20% { clip: rect(68px, 9999px, 11px, 0); }
+            40% { clip: rect(93px, 9999px, 99px, 0); }
+            60% { clip: rect(77px, 9999px, 98px, 0); }
+            80% { clip: rect(1px, 9999px, 86px, 0); }
+            100% { clip: rect(39px, 9999px, 89px, 0); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Background Canvas for Particles -->
+    <canvas id="bg-canvas"></canvas>
+
+    <div class="client-window">
+        <!-- Header -->
+        <div class="header">
+            <span class="patch-note">PATCH 26.04</span>
+            <h1>DIE ARAM KONSTITUTION</h1>
+        </div>
+        
+        <div class="sub-header">
+            "Winning is secondary. Tilting the homies is primary." — certainly not Imaqtpie
+        </div>
+
+        <!-- Main Content -->
+        <div class="content">
+            
+            <!-- Rule 1 -->
+            <div class="rule-card">
+                <div class="rule-title">Artikel I: Das Joining Protokol</div>
+                <div class="rule-body">
+                    Wenn einer ARAM Session beitgetreten wird, ist es nicht gestattet letzte Runde zu callen. Man is verpflichtet mindestens zwei Runden zu spielen. Artikel II ist trotzdem Vorrausetzung.
+                    "We are here to press buttons, not watch Netflix while attached to a Sett running it down."
+                </div>
+            </div>
+
+            <!-- Rule 2 -->
+            <div class="rule-card">
+                <div class="rule-title">Artikel II: Uno Etiquette</div>
+                <div class="rule-body">
+                    Eine Session darf nicht beendet werden ohne die letzte Runde zu callen.
+                    "Man beendet keine Session. Die Session beendet dich."
+                </div>
+            </div>
+
+            <!-- Rule 3 -->
+            <div class="rule-card">
+                <div class="rule-title">Article III: The "Gapped" Clause</div>
+                <div class="rule-body">
+                    If you die 1v5 under the enemy tower while spamming "???", you are required to stay silent for 30 seconds. Coping is allowed, but <span class="highlight">blaming the jungler</span> (even though there is no jungle) is punishable by death.
+                </div>
+            </div>
+
+            <!-- Rule 4 -->
+            <div class="rule-card">
+                <div class="rule-title">Article IV: Forbidden Tech</div>
+                <div class="rule-body">
+                    The following are considered War Crimes:
+                    <ul style="margin-top:10px; margin-left:20px; list-style-type: square;">
+                        <li>Building <span class="banned">Lethality Rek'Sai</span>.</li>
+                        <li>Playing <span class="highlight">AP Master Yi</span> without asking permission.</li>
+                        <li>Taking the Health Relic when your teammate is clearly pinging for it.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Rule 5 -->
+            <div class="rule-card">
+                <div class="rule-title">Article V: The "GG Go Next" Policy</div>
+                <div class="rule-body">
+                    A surrender vote may only be initiated if the Nexus is literally exploding or if we have 3 AFKs. "Enemy team has Ornn" is <span class="highlight">NOT</span> a valid reason to surrender. Play it out. The late-game ARAM Baron throw is inevitable.
+                </div>
+            </div>
+
+            <!-- Warning Meme Box -->
+            <div class="warning-box">
+                <h3>⚠️ WARNING: MENTAL BOOM IMMINENT ⚠️</h3>
+                <p style="color: #ccc; font-size: 0.9rem; margin-top: 5px;">
+                    By clicking accept, you acknowledge that your MMR will be destroyed and your friendship will be tested by <span class="glitch" data-text="random chance">random chance</span>.
+                </p>
+            </div>
+
+            <!-- Footer Button -->
+            <div class="footer-action">
+                <button class="lol-btn" onclick="acceptRules()">
+                    Find Match
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // --- Background Particle Effect Logic ---
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+
+        // Set canvas size
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        // Particle Array
+        let particles = [];
+
+        // Particle Class
+        class Particle {
+            constructor() {
+                this.reset();
+            }
+
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = canvas.height + Math.random() * 100; // Start below screen
+                this.size = Math.random() * 2.5 + 0.5;
+                this.speedY = Math.random() * 1.5 + 0.2;
+                this.speedX = (Math.random() - 0.5) * 0.5; // Slight drift
+                // Color: Mix of Blue (Mana) and Gold (Champion) particles
+                const colors = ['#C8AA6E', '#4CC9F0', '#F0E6D2', '#785A28'];
+                this.color = colors[Math.floor(Math.random() * colors.length)];
+                this.opacity = Math.random() * 0.5 + 0.2;
+            }
+
+            update() {
+                this.y -= this.speedY;
+                this.x += this.speedX;
+                
+                // Fade out near top
+                if (this.y < canvas.height * 0.2) {
+                   this.opacity -= 0.01;
+                }
+
+                // Reset if off screen
+                if (this.y < -10 || this.opacity <= 0) {
+                    this.reset();
+                }
+            }
+
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.globalAlpha = this.opacity;
+                // Draw diamond shape (hextech style)
+                ctx.beginPath();
+                ctx.moveTo(this.x, this.y - this.size);
+                ctx.lineTo(this.x + this.size, this.y);
+                ctx.lineTo(this.x, this.y + this.size);
+                ctx.lineTo(this.x - this.size, this.y);
+                ctx.closePath();
+                ctx.fill();
+                ctx.globalAlpha = 1;
+            }
+        }
+
+        // Initialize particles
+        function initParticles() {
+            particles = [];
+            const numberOfParticles = Math.floor((canvas.width * canvas.height) / 8000);
+            for (let i = 0; i < numberOfParticles; i++) {
+                const p = new Particle();
+                p.y = Math.random() * canvas.height; // Initial spawn spread
+                particles.push(p);
+            }
+        }
+        initParticles();
+        window.addEventListener('resize', initParticles);
+
+        // Animation Loop
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw connections (constellation effect)
+            ctx.strokeStyle = '#C8AA6E';
+            ctx.lineWidth = 0.5;
+            
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+
+            requestAnimationFrame(animate);
+        }
+        animate();
+
+
+        // --- Button Logic ---
+        function acceptRules() {
+            const messages = [
+                "Queue popped! (Actually, did it?)",
+                "Support diff detected.",
+                "GG GO NEXT",
+                "WARNING: Low honor level detected.",
+                "Teemo has been assigned to your team.",
+                "The enemy has 5 mages. Good luck."
+            ];
+            
+            const randomMsg = messages[Math.floor(Math.random() * messages.length)];
+
+            const notification = document.createElement('div');
+            notification.style.position = 'fixed';
+            notification.style.top = '50%';
+            notification.style.left = '50%';
+            notification.style.transform = 'translate(-50%, -50%)';
+            notification.style.background = 'linear-gradient(180deg, #1E2328 0%, #433D2B 100%)';
+            notification.style.border = '2px solid #C8AA6E';
+            notification.style.padding = '40px';
+            notification.style.zIndex = '1000';
+            notification.style.textAlign = 'center';
+            notification.style.fontFamily = 'Cinzel, serif';
+            notification.style.color = '#F0E6D2';
+            notification.style.boxShadow = '0 0 50px rgba(0,0,0,0.8)';
+            
+            notification.innerHTML = `
+                <h2 style="color: #C8AA6E; margin-bottom: 15px;">${randomMsg}</h2>
+                <p style="color: #9BA8AB; font-family: 'Roboto', sans-serif; font-size: 0.9rem;">Preparing to int...</p>
+                <button onclick="this.parentElement.remove()" style="
+                    margin-top: 20px;
+                    background: #0A1428;
+                    border: 1px solid #C8AA6E;
+                    color: #C8AA6E;
+                    padding: 10px 20px;
+                    cursor: pointer;
+                    font-family: 'Cinzel', serif;
+                ">Dismiss</button>
+            `;
+
+            document.body.appendChild(notification);
+        }
+    </script>
+</body>
+</html>
