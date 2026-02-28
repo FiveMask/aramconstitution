@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ARAM CONSTITUTION | Patch 14.69</title>
+    <title>ARAM VERFASSUNG | Patch 26.4</title>
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
@@ -30,13 +30,13 @@
             min-height: 100vh;
             display: flex;
             justify-content: center;
-            align-items: center; /* Centered vertically */
+            align-items: center;
             padding: 20px;
             position: relative;
-            overflow-x: hidden; /* Prevent scroll from particles */
+            overflow-x: hidden;
         }
 
-        /* --- The Background Effect Container --- */
+        /* --- Background Effect --- */
         #bg-canvas {
             position: fixed;
             top: 0;
@@ -56,11 +56,11 @@
             border-top: 4px solid var(--lol-gold);
             box-shadow: 0 0 50px rgba(0, 0, 0, 0.8), 0 0 100px rgba(74, 64, 21, 0.2);
             position: relative;
-            backdrop-filter: blur(5px); /* Glass effect */
+            backdrop-filter: blur(5px);
             z-index: 1;
         }
 
-        /* The Top Bar */
+        /* Header */
         .header {
             background: linear-gradient(90deg, #1E2328 0%, #785A28 50%, #1E2328 100%);
             padding: 15px;
@@ -105,10 +105,143 @@
             padding: 30px;
         }
 
-        /* Rule Cards - Updated without keys */
+        /* --- Tracker Section --- */
+        .tracker-section {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid #463714;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        .tracker-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #463714;
+            padding-bottom: 10px;
+        }
+
+        .tracker-title {
+            font-family: 'Cinzel', serif;
+            color: var(--lol-gold);
+            font-size: 1.2rem;
+        }
+
+        .add-player-form {
+            display: flex;
+            gap: 10px;
+        }
+
+        .lol-input {
+            background: #010A13;
+            border: 1px solid #463714;
+            color: var(--lol-gold-light);
+            padding: 8px 12px;
+            font-family: 'Roboto', sans-serif;
+            outline: none;
+        }
+
+        .lol-input:focus {
+            border-color: var(--lol-gold);
+        }
+
+        .lol-btn-small {
+            background: linear-gradient(180deg, #1E2328 0%, #433D2B 100%);
+            border: 1px solid var(--lol-gold);
+            color: var(--lol-gold-light);
+            padding: 8px 15px;
+            font-family: 'Cinzel', serif;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.8rem;
+        }
+        
+        .lol-btn-small:hover {
+            background: linear-gradient(180deg, #433D2B 0%, #785A28 100%);
+        }
+
+        .player-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .player-card {
+            background: linear-gradient(90deg, rgba(30, 35, 40, 0.8) 0%, rgba(10, 20, 30, 0.8) 100%);
+            border: 1px solid #333;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.2s;
+        }
+
+        .player-card:hover {
+            border-color: var(--lol-gold);
+        }
+
+        .player-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .player-name {
+            font-weight: bold;
+            color: var(--lol-gold-light);
+        }
+
+        .adc-count {
+            font-size: 0.9rem;
+            color: #9BA8AB;
+            margin-top: 2px;
+        }
+
+        .adc-count span {
+            color: var(--mana-blue);
+            font-weight: bold;
+        }
+
+        /* Curse effect */
+        .player-card.cursed {
+            border-color: var(--red-accent);
+            animation: cursePulse 2s infinite;
+        }
+        
+        .player-card.cursed .adc-count span {
+            color: var(--red-accent);
+            text-shadow: 0 0 5px var(--red-accent);
+        }
+
+        @keyframes cursePulse {
+            0% { background-color: rgba(30, 35, 40, 0.8); }
+            50% { background-color: rgba(60, 20, 25, 0.5); }
+            100% { background-color: rgba(30, 35, 40, 0.8); }
+        }
+
+        .increment-btn {
+            background: #0A1428;
+            border: 1px solid #555;
+            color: #CCC;
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .increment-btn:hover {
+            border-color: var(--lol-gold);
+            color: var(--lol-gold);
+        }
+
+        /* Rule Cards */
         .rule-card {
             background: linear-gradient(90deg, rgba(70, 70, 80, 0.1) 0%, transparent 100%);
-            border-left: 4px solid var(--lol-gold); /* New visual anchor */
+            border-left: 4px solid var(--lol-gold);
             margin-bottom: 20px;
             padding: 20px;
             position: relative;
@@ -131,7 +264,6 @@
             align-items: center;
         }
         
-        /* Decorative diamond next to title */
         .rule-title::before {
             content: '';
             display: inline-block;
@@ -255,60 +387,100 @@
 </head>
 <body>
 
-    <!-- Background Canvas for Particles -->
+    <!-- Background Canvas -->
     <canvas id="bg-canvas"></canvas>
 
     <div class="client-window">
         <!-- Header -->
         <div class="header">
-            <span class="patch-note">PATCH 26.04</span>
-            <h1>DIE ARAM KONSTITUTION</h1>
+            <span class="patch-note">PATCH 14.20</span>
+            <h1>DIE ARAM VERFASSUNG</h1>
         </div>
         
         <div class="sub-header">
-            "Winning is secondary. Tilting the homies is primary."
+            "Gewinnen ist Nebensache. Die Homies tilten ist Hauptsache." — sicherlich nicht Imaqtpie
         </div>
 
         <!-- Main Content -->
         <div class="content">
             
-            <!-- Rule 1 -->
-            <div class="rule-card">
-                <div class="rule-title">Artikel I: Das Joining Protokol</div>
-                <div class="rule-body">
-                    Wenn einer ARAM Session beitgetreten wird, ist es nicht gestattet letzte Runde zu callen. Man is verpflichtet mindestens zwei Runden zu spielen. Artikel II ist trotzdem Vorrausetzung. <br>
-                    "Wir sind hier, um Tasten zu drücken – nicht um Netflix zu schauen, während wir an einem Sett hängen, der absichtlich reinrennt und feedet."
+            <!-- ADC TRACKER SECTION -->
+            <div class="tracker-section">
+                <div class="tracker-header">
+                    <div class="tracker-title">SESSIONS-ROSTER: ADC-FLUCH-MESSER</div>
+                    <button class="lol-btn-small" onclick="showResetModal()" style="font-size: 0.7rem; padding: 5px 10px;">Reset Session</button>
+                </div>
+                
+                <div class="add-player-form">
+                    <input type="text" id="playerNameInput" class="lol-input" placeholder="Beschwörername eingeben..." onkeypress="handleEnter(event)">
+                    <button class="lol-btn-small" onclick="addPlayer()">Spieler adden</button>
+                </div>
+
+                <div class="player-list" id="playerListContainer">
+                    <!-- Players will be injected here -->
                 </div>
             </div>
 
-            <!-- Rule 2 -->
+            <!-- Rules -->
+            <div class="rule-card">
+                <div class="rule-title">Artikel I: Das Beitritts-Protokol</div>
+                <div class="rule-body">
+                    Wenn einer ARAM Session beitgetreten wird, ist es nicht gestattet letzte Runde zu callen.
+                    Man is verpflichtet mindestens zwei Runden zu spielen. Artikel II ist trotzdem Vorrausetzung. <br>
+                    *****<br>
+                    "Wir sind hier, um Tasten zu drücken – nicht um Netflix zu schauen."
+                </div>
+            </div>
+
             <div class="rule-card">
                 <div class="rule-title">Artikel II: Uno Etiquette</div>
                 <div class="rule-body">
                     Eine Session darf nicht beendet werden ohne die letzte Runde zu callen.<br>
+                    *****<br>
                     "Man beendet keine Session. Die Session beendet dich."
                 </div>
             </div>
-            <!-- Rule 3 -->
+
             <div class="rule-card">
-                <div class="rule-title">Artikel III: Chili-Öl Klausel</div>
+                <div class="rule-title">Artikel III: Die "Gapped" Klausel</div>
                 <div class="rule-body">
-                    Strategische Augment-Wahl für perfektes Teamplay ist immer von Nöten. Nimm das Chili-Öl und lass dich alle 5 Sekunden anschreien wo es denn beleibt und warum es zu klein ist.<br>
+                    Strategische Augment-Wahl für perfektes Teamplay ist immer von Nöten.<br>
+                    Nimm das Chili-Öl und lass dich alle 5 Sekunden anschreien wo es denn beleibt und warum es zu klein ist.<br>
+                    *****<br>
                     "„Haha Chiliöl go brrrr 🔥🔥🔥“"
                 </div>
             </div>
 
-            <!-- Warning Meme Box -->
+            <div class="rule-card">
+                <div class="rule-title">Artikel IV: Verbotene Tech</div>
+                <div class="rule-body">
+                    Folgendes gilt als Kriegsverbrechen:
+                    <ul style="margin-top:10px; margin-left:20px; list-style-type: square;">
+                        <li><span class="banned">Lethality Rek'Sai</span> bauen.</li>
+                        <li><span class="highlight">AP Master Yi</span> spielen ohne vorher zu fragen.</li>
+                        <li>Das Heilungsrelikt nehmen, wenn ein Teammate offensichtlich danach pingt.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="rule-card">
+                <div class="rule-title">Artikel V: Die "GG Go Next" Richtlinie</div>
+                <div class="rule-body">
+                    Eine Surrender-Abstimmung darf nur eingeleitet werden, wenn der Nexus buchstäblich explodiert oder wir 3 AFKs haben. "Das Gegnerteam hat Ornn" ist <span class="highlight">KEIN</span> valider Grund zum aufgeben. Spiel es aus. Der Late-Game ARAM Baron Throw ist unausweichlich.
+                </div>
+            </div>
+
             <div class="warning-box">
-                <h3>⚠️ WARNING: MENTAL BOOM INCOMING ⚠️</h3>
+                <h3>⚠️ WARNUNG: MENTALER ZUSAMMENBRUCH UNMITTELBAR BEVORSTEHEND ⚠️</h3>
                 <p style="color: #ccc; font-size: 0.9rem; margin-top: 5px;">
-                    Durch Klicken auf „Akzeptieren“ bestätigst du, dass dein MMR zerstört wird und deine Freundschaft vom <span class="glitch" data-text="Zufall">Zufall</span> auf die Probe gestellt wird.
+                    Mit dem Klick auf Akzeptieren erkennst du an, dass deine MMR zerstört wird und deine Freundschaft durch <span class="glitch" data-text="den Zufall">den Zufall</span> auf die Probe gestellt wird.
+                </p>
             </div>
 
             <!-- Footer Button -->
             <div class="footer-action">
                 <button class="lol-btn" onclick="acceptRules()">
-                    Akzeptieren
+                    Suche Match
                 </button>
             </div>
 
@@ -320,7 +492,6 @@
         const canvas = document.getElementById('bg-canvas');
         const ctx = canvas.getContext('2d');
 
-        // Set canvas size
         function resizeCanvas() {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
@@ -328,10 +499,8 @@
         window.addEventListener('resize', resizeCanvas);
         resizeCanvas();
 
-        // Particle Array
         let particles = [];
 
-        // Particle Class
         class Particle {
             constructor() {
                 this.reset();
@@ -339,11 +508,10 @@
 
             reset() {
                 this.x = Math.random() * canvas.width;
-                this.y = canvas.height + Math.random() * 100; // Start below screen
+                this.y = canvas.height + Math.random() * 100;
                 this.size = Math.random() * 2.5 + 0.5;
                 this.speedY = Math.random() * 1.5 + 0.2;
-                this.speedX = (Math.random() - 0.5) * 0.5; // Slight drift
-                // Color: Mix of Blue (Mana) and Gold (Champion) particles
+                this.speedX = (Math.random() - 0.5) * 0.5;
                 const colors = ['#C8AA6E', '#4CC9F0', '#F0E6D2', '#785A28'];
                 this.color = colors[Math.floor(Math.random() * colors.length)];
                 this.opacity = Math.random() * 0.5 + 0.2;
@@ -353,12 +521,10 @@
                 this.y -= this.speedY;
                 this.x += this.speedX;
                 
-                // Fade out near top
                 if (this.y < canvas.height * 0.2) {
                    this.opacity -= 0.01;
                 }
 
-                // Reset if off screen
                 if (this.y < -10 || this.opacity <= 0) {
                     this.reset();
                 }
@@ -367,7 +533,6 @@
             draw() {
                 ctx.fillStyle = this.color;
                 ctx.globalAlpha = this.opacity;
-                // Draw diamond shape (hextech style)
                 ctx.beginPath();
                 ctx.moveTo(this.x, this.y - this.size);
                 ctx.lineTo(this.x + this.size, this.y);
@@ -379,45 +544,182 @@
             }
         }
 
-        // Initialize particles
         function initParticles() {
             particles = [];
             const numberOfParticles = Math.floor((canvas.width * canvas.height) / 8000);
             for (let i = 0; i < numberOfParticles; i++) {
                 const p = new Particle();
-                p.y = Math.random() * canvas.height; // Initial spawn spread
+                p.y = Math.random() * canvas.height;
                 particles.push(p);
             }
         }
         initParticles();
         window.addEventListener('resize', initParticles);
 
-        // Animation Loop
         function animate() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            
-            // Draw connections (constellation effect)
-            ctx.strokeStyle = '#C8AA6E';
-            ctx.lineWidth = 0.5;
-            
             particles.forEach(p => {
                 p.update();
                 p.draw();
             });
-
             requestAnimationFrame(animate);
         }
         animate();
+
+        // --- Session Tracker Logic ---
+        
+        let players = JSON.parse(localStorage.getItem('aramSessionPlayers')) || [];
+
+        function savePlayers() {
+            localStorage.setItem('aramSessionPlayers', JSON.stringify(players));
+        }
+
+        function renderPlayers() {
+            const container = document.getElementById('playerListContainer');
+            container.innerHTML = '';
+
+            if (players.length === 0) {
+                container.innerHTML = '<div style="color: #555; text-align: center; padding: 20px; font-style: italic;">Keine Spieler in der Session...</div>';
+                return;
+            }
+
+            players.forEach((player, index) => {
+                const isCursed = player.count >= 3;
+                
+                const card = document.createElement('div');
+                card.className = `player-card ${isCursed ? 'cursed' : ''}`;
+                
+                card.innerHTML = `
+                    <div class="player-info">
+                        <div class="player-name">${player.name}</div>
+                        <div class="adc-count">ADC Runden: <span>${player.count}</span></div>
+                    </div>
+                    <div style="display: flex; gap: 5px;">
+                        <button class="increment-btn" onclick="incrementAdc(${index})">+</button>
+                        <button class="increment-btn" style="font-size: 0.8rem;" onclick="removePlayer(${index})">X</button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function addPlayer() {
+            const input = document.getElementById('playerNameInput');
+            const name = input.value.trim();
+            if (name) {
+                players.push({ name: name, count: 0 });
+                input.value = '';
+                savePlayers();
+                renderPlayers();
+            }
+        }
+
+        function handleEnter(e) {
+            if (e.key === 'Enter') {
+                addPlayer();
+            }
+        }
+
+        function incrementAdc(index) {
+            players[index].count++;
+            savePlayers();
+            renderPlayers();
+        }
+
+        function removePlayer(index) {
+            players.splice(index, 1);
+            savePlayers();
+            renderPlayers();
+        }
+
+        // NEW: Custom Modal for Reset
+        function showResetModal() {
+            // Create modal container
+            const modal = document.createElement('div');
+            modal.style.position = 'fixed';
+            modal.style.top = '0';
+            modal.style.left = '0';
+            modal.style.width = '100%';
+            modal.style.height = '100%';
+            modal.style.background = 'rgba(0, 0, 0, 0.8)';
+            modal.style.zIndex = '2000';
+            modal.style.display = 'flex';
+            modal.style.justifyContent = 'center';
+            modal.style.alignItems = 'center';
+
+            // Create modal content box
+            const box = document.createElement('div');
+            box.style.background = 'linear-gradient(180deg, #1E2328 0%, #433D2B 100%)';
+            box.style.border = '2px solid var(--lol-gold)';
+            box.style.padding = '40px';
+            box.style.textAlign = 'center';
+            box.style.fontFamily = 'Cinzel, serif';
+            box.style.color = '#F0E6D2';
+            box.style.boxShadow = '0 0 50px rgba(0,0,0,0.8)';
+            box.style.maxWidth = '400px';
+
+            box.innerHTML = `
+                <h2 style="color: #FF4655; margin-bottom: 15px;">SESSION ZURÜCKSETZEN?</h2>
+                <p style="color: #9BA8AB; font-family: 'Roboto', sans-serif; font-size: 0.95rem; margin-bottom: 30px;">
+                    Willst du wirklich alle Spieler und Statistiken löschen?<br>Diese Aktion kann nicht rückgängig gemacht werden.
+                </p>
+                <div style="display: flex; gap: 15px; justify-content: center;">
+                    <button id="confirmResetBtn" style="
+                        background: linear-gradient(180deg, #433D2B 0%, #785A28 100%);
+                        border: 1px solid #C8AA6E;
+                        color: #F0E6D2;
+                        padding: 10px 25px;
+                        cursor: pointer;
+                        font-family: 'Cinzel', serif;
+                        font-weight: bold;
+                    ">JA, ALLES LÖSCHEN</button>
+                    
+                    <button id="cancelResetBtn" style="
+                        background: #0A1428;
+                        border: 1px solid #555;
+                        color: #9BA8AB;
+                        padding: 10px 25px;
+                        cursor: pointer;
+                        font-family: 'Cinzel', serif;
+                    ">Abbrechen</button>
+                </div>
+            `;
+
+            modal.appendChild(box);
+            document.body.appendChild(modal);
+
+            // Button Functions
+            document.getElementById('confirmResetBtn').onclick = function() {
+                players = []; // Empty array
+                savePlayers(); // Save to localstorage
+                renderPlayers(); // Update UI
+                document.body.removeChild(modal); // Close modal
+            };
+
+            document.getElementById('cancelResetBtn').onclick = function() {
+                document.body.removeChild(modal); // Just close modal
+            };
+            
+            // Close on background click
+            modal.onclick = function(e) {
+                if (e.target === modal) {
+                    document.body.removeChild(modal);
+                }
+            };
+        }
+
+        // Initial Render
+        renderPlayers();
 
 
         // --- Button Logic ---
         function acceptRules() {
             const messages = [
-                "Queue ist aufgegangen! (Oder etwa doch nicht?)",
-                "Support-Diff erkannt.",
+                "Queue popped! (Echt jetzt?)",
+                "Support diff detected.",
                 "GG GO NEXT",
-                "WARNUNG: Niedriges Honor-Level festgestellt.",
-                "Teemo wurde deinem Team zugewiesen.",
+                "WARNUNG: Niedriges Ehrenlevel erkannt.",
+                "Teemo wurde deinem Team zugeteilt.",
                 "Der Gegner hat 5 Magier. Viel Glück."
             ];
             
@@ -439,7 +741,7 @@
             
             notification.innerHTML = `
                 <h2 style="color: #C8AA6E; margin-bottom: 15px;">${randomMsg}</h2>
-                <p style="color: #9BA8AB; font-family: 'Roboto', sans-serif; font-size: 0.9rem;">Preparing to int...</p>
+                <p style="color: #9BA8AB; font-family: 'Roboto', sans-serif; font-size: 0.9rem;">Vorbereitung zum inten...</p>
                 <button onclick="this.parentElement.remove()" style="
                     margin-top: 20px;
                     background: #0A1428;
@@ -448,7 +750,7 @@
                     padding: 10px 20px;
                     cursor: pointer;
                     font-family: 'Cinzel', serif;
-                ">Dismiss</button>
+                ">Schließen</button>
             `;
 
             document.body.appendChild(notification);
